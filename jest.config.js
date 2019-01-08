@@ -1,9 +1,13 @@
 'use strict';
 
 module.exports = {
-  projects: [
-    '<rootDir>/config/jest-eslint.js',
-    '<rootDir>/config/jest-tsc.js',
-    '<rootDir>/config/jest-test.js',
-  ],
+  projects: ['<rootDir>/config/lint.js', '<rootDir>/config/typecheck.js'],
+  displayName: 'test',
+  rootDir: __dirname,
+  // testPathIgnorePatterns: ['node_modules', 'dist'],
+  testMatch: ['<rootDir>/**/*.test.ts?(x)'],
+  moduleFileExtensions: ['js', 'json', 'jsx', 'node', 'ts', 'tsx'],
+  transform: {
+    '^.+\\.tsx?$': 'babel-jest',
+  },
 };

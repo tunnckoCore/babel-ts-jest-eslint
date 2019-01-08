@@ -5,6 +5,9 @@
   "repository": "git@github.com:tunnckoCore/babel-ts-jest-eslint.git",
   "author": "Charlike Mike Reagent <mameto2011@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint . --fix --format codeframe --silent --ext '.ts,.tsx,.js'"
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
