@@ -6,7 +6,10 @@
   "author": "Charlike Mike Reagent <mameto2011@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint . --fix --format codeframe --silent --ext '.ts,.tsx,.js'"
+    "test": "jest --coverage",
+    "dev": "jest --watch",
+    "lint": "eslint . --fix --format codeframe --silent --ext .ts,.tsx,.js",
+    "build": "babel src -d dist --delete-dir-on-start -x .ts,.tsx"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
