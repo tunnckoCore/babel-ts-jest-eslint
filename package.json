@@ -1,0 +1,24 @@
+{
+  "name": "babel-ts-jest-eslint",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:tunnckoCore/babel-ts-jest-eslint.git",
+  "author": "Charlike Mike Reagent <mameto2011@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "@types/jest": "^23.3.12",
+    "@types/node": "^10.12.18",
+    "eslint": "^5.12.0",
+    "eslint-config-tunnckocore": "^2.0.0-rc.6",
+    "jest": "^23.6.0",
+    "jest-runner-eslint": "^0.7.1",
+    "jest-runner-tsc": "^1.3.2",
+    "prettier": "^1.15.3",
+    "typescript": "^3.2.2"
+  }
+}
