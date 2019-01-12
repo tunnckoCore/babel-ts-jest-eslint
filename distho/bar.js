@@ -1,6 +1,5 @@
 // import fs from 'fs-extra';
 // import fastGlob from 'fast-glob';
-
 // sasa
 // // class GlobStateCache {
 // //   async load(stateFile) {
@@ -14,19 +13,16 @@
 // //     }
 // //     this.state = state;
 // //   }
-
 // //   async monitor(patterns) {
 // //     await fastGlob(patterns, {
 // //       ignore: ['**/node_modules/**'],
 // //       transform: async (fp) => {
 // //         const file = { path: fp };
-
 // //         file.contents = fs.readFile(file.path, 'utf8');
 // //       },
 // //     });
 // //   }
 // // }
-
 // async function main() {
 //   await fastGlob('.', {
 //     ignore: ['**/node_modules/**'],
@@ -37,5 +33,4 @@
 //     },
 //   });
 // }
-
 // main();

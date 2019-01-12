@@ -2,10 +2,16 @@
   "compilerOptions": {
     "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationDir": "dist",
     "types": ["jest", "node"],
+    // Target latest version of ECMAScript.
+    "target": "esnext",
+    // Search under node_modules for non-relative imports.
+    "moduleResolution": "node",
+    // Enable strictest settings like strictNullChecks & noImplicitAny.
+    "strict": true,
+    // Import non-ES modules as default imports.
     "esModuleInterop": true
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "include": ["src"],
   "exclude": ["./src/**/*.test.ts", "./src/**/*.test.tsx"]
 }
