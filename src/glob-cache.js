@@ -4,7 +4,7 @@ import fastGlob from 'fast-glob';
 
 /* eslint-disable class-methods-use-this */
 
-class GlobStateCache {
+export class GlobStateCache {
   constructor() {
     this.loadedFiles = null;
     this.changedFiles = {};
@@ -35,7 +35,17 @@ class GlobStateCache {
 
     // compare(oldFileFromCache: object, newFile: object): boolean
     let { shouldChange, onChange } = opts;
-    shouldChange = typeof shouldChange === 'function' ? shouldChange : () => {};
+    shouldChange =
+      typeof shouldChange === 'function'
+        ? shouldChange
+        : (oldFile, file) => {
+            const differentSize = file.stat.size !== oldFile.stat.size;
+            const differentContents = file.contentHash !== oldFile.contentHash;
+            const modifiedTime = file.stat.mtimeMs !== oldFile.stat.mtimeMs;
+
+            return differentSize && differentContents && modifiedTime;
+          };
+
     onChange = typeof onChange === 'function' ? onChange : () => {};
 
     const filepaths = await fastGlob(patterns, opts);
@@ -56,12 +66,7 @@ class GlobStateCache {
       const file = await this.createFile(filepath);
 
       if (loadedFile) {
-        const differentSize = file.stat.size !== loadedFile.stat.size;
-        const differentContents = file.contentHash !== loadedFile.contentHash;
-        const modifiedTime = file.stat.mtimeMs !== loadedFile.stat.mtimeMs;
-        const isChanged = differentSize && differentContents && modifiedTime;
-
-        if (shouldChange(loadedFile, file) || isChanged) {
+        if (shouldChange(loadedFile, file)) {
           onChange(loadedFile, file);
           this.changedFiles[file.path] = file;
         }
@@ -116,20 +121,55 @@ class GlobStateCache {
   }
 }
 
-async function main(patterns, options) {
+/**
+ * All `patterns` and `options` are directly passed to `fast-glob`.
+ *
+ * @param {any} patterns
+ * @param {any} options
+ */
+export default async function main(patterns, options) {
   const globState = new GlobStateCache();
 
   await globState.loadCache('./file-cache.json');
-  await globState.monitor(patterns, options);
+
+  // only the changed files
+  // from the given glob patterns
+  const changedFiles = await globState.monitor(patterns, options);
+  console.log(changedFiles);
+  console.log('Changed:', Object.keys(changedFiles).length);
+
+  // later, write save the cache
   await globState.writeCache();
 
   return globState;
 }
 
-let i = 0;
+/**
+ * Example
+ */
+
 main(['src/**/*.{js,ts,tsx}', '!src/**/*.test.{ts,tsx}'], {
-  onChange: (old, file) => {
-    i++;
-    console.log(i);
+  /**
+   * Defaults to the following `opts.shouldChange` below
+   *
+   * @params {Object} oldFile - file from cache
+   * @params {Object} file - current state of the file
+   */
+  // shouldChange: (oldFile, file) => {
+  //   const differentSize = file.stat.size !== oldFile.stat.size;
+  //   const differentContents = file.contentHash !== oldFile.contentHash;
+  //   const modifiedTime = file.stat.mtimeMs !== oldFile.stat.mtimeMs;
+
+  //   return differentSize && differentContents && modifiedTime;
+  // },
+
+  /**
+   * Called when `opts.shouldChange` returns `true`
+   *
+   * @params {Object} oldFile - file from cache
+   * @params {Object} file - current state of the file
+   */
+  onChange: (oldFile, file) => {
+    console.log(oldFile.contentHash !== file.contentHash); // true
   },
 });
